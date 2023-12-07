@@ -3,6 +3,9 @@ package trie;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Trie Data Structure with insert, search, startsWith methods.
+ */
 public class Trie {
     private final Node root = new Node();
 
