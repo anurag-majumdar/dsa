@@ -8,18 +8,19 @@ public class Trie {
 
     public void insert(String word) {
         Node current = root;
+        // O (w)
         char[] ch = word.toCharArray();
         for (char c : ch) {
-            current.children.putIfAbsent(c, new Node(c));
-            current = current.children.get(c);
+            current.children.putIfAbsent(c, new Node(c)); // O(1)
+            current = current.children.get(c); // O(1)
         }
         current.isCompleteWord = true;
     }
 
     public boolean search(String word) {
         Node current = root;
+        // O (w)
         char[] ch = word.toCharArray();
-
         for (char c : ch) {
             current = current.children.getOrDefault(c, null);
             if (current == null) {
@@ -31,8 +32,8 @@ public class Trie {
 
     public boolean startsWith(String prefix) {
         Node current = root;
+        // O (w)
         char[] ch = prefix.toCharArray();
-
         for (char c : ch) {
             current = current.children.getOrDefault(c, null);
             if (current == null) {
@@ -45,6 +46,7 @@ public class Trie {
     public String getLongestCommonPrefix() {
         StringBuilder sb = new StringBuilder();
         Node current = root;
+        // O (w) where w is the shortest word
         while (!current.isCompleteWord) {
             if (current.children.size() != 1) return sb.toString();
             for (Map.Entry<Character, Node> e : current.children.entrySet()) {
