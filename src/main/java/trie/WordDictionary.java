@@ -3,6 +3,9 @@ package trie;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Design a Trie based search with dots.
+ */
 public class WordDictionary {
     private Node root;
 
@@ -31,10 +34,7 @@ public class WordDictionary {
         while (index < wordSize) {
             char c = word.charAt(index);
             if (c == '.') {
-                for (Map.Entry<Character, Node> e : current.children.entrySet()) {
-                    current = e.getValue();
-                    return search(word.substring(index + 1), current);
-                }
+                return searchDottedCharacter(word, current, index);
             }
             current = current.children.getOrDefault(c, null);
             if (current == null) {
@@ -43,6 +43,16 @@ public class WordDictionary {
             index++;
         }
         return current.isCompleteWord;
+    }
+
+    private boolean searchDottedCharacter(String word, Node current, int index) {
+        for (Map.Entry<Character, Node> e : current.children.entrySet()) {
+            current = e.getValue();
+            if (search(word.substring(index + 1), current)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private static class Node {
