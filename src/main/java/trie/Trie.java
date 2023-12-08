@@ -1,6 +1,8 @@
 package trie;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -58,6 +60,46 @@ public class Trie {
             }
         }
         return sb.toString();
+    }
+
+    /**
+     * Partially working.
+     *
+     * @param prefix the search prefix
+     * @return the list of words matching the search prefix.
+     */
+    public List<String> searchWithPrefix(String prefix) {
+        List<String> searchResults = new ArrayList<>();
+        Node current = root;
+        char[] prefixChars = prefix.toCharArray();
+        StringBuilder sb = new StringBuilder();
+        for (char prefixChar : prefixChars) {
+            sb.append(prefixChar);
+            current = current.children.getOrDefault(prefixChar, null);
+            if (current == null) {
+                return searchResults;
+            }
+
+            if (current.isCompleteWord) {
+                searchResults.add(sb.toString());
+            }
+        }
+
+        getRemainingSearchResults(prefix, current, searchResults);
+        return searchResults;
+    }
+
+    private void getRemainingSearchResults(String prefix, Node current, List<String> searchResults) {
+        for (Map.Entry<Character, Node> entry : current.children.entrySet()) {
+            current = entry.getValue();
+            if (current == null) {
+                return;
+            }
+            if (current.isCompleteWord) {
+                searchResults.add(prefix + current.c);
+            }
+            getRemainingSearchResults(prefix + current.c, current, searchResults);
+        }
     }
 
     private static class Node {
